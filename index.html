@@ -1,234 +1,331 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <title>花蓮縣一鍵檢舉</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    h1 {
-      font-size: 1.6rem;
-      text-align: center;
-      margin-bottom: 4px;
-    }
-    .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 16px;
-    }
-    .section {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-    }
-    .section h2 {
-      font-size: 1.1rem;
-      margin: 0 0 8px 0;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .section p {
-      margin: 4px 0;
-      font-size: 0.9rem;
-      line-height: 1.4;
-    }
-    .tag {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      background: #eee;
-      color: #555;
-      margin-left: 4px;
-    }
-    .btn {
-      display: inline-block;
-      width: 100%;
-      text-align: center;
-      padding: 10px 12px;
-      margin-top: 6px;
-      margin-bottom: 4px;
-      border-radius: 999px;
-      border: none;
-      text-decoration: none;
-      font-size: 0.95rem;
-      cursor: pointer;
-      background: #2563eb;
-      color: #ffffff;
-      font-weight: 600;
-    }
-    .btn.secondary {
-      background: #10b981;
-    }
-    .btn.outline {
-      background: #ffffff;
-      color: #2563eb;
-      border: 1px solid #2563eb;
-    }
-    .btn.small {
-      width: auto;
-      padding: 6px 10px;
-      font-size: 0.8rem;
-      margin-top: 4px;
-    }
-    .template-box {
-      background: #f9fafb;
-      border-radius: 8px;
-      padding: 8px;
-      font-size: 0.85rem;
-      border: 1px dashed #d1d5db;
-      margin-top: 6px;
-      white-space: pre-line;
-    }
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      padding: 8px;
-      font-size: 0.85rem;
-      resize: vertical;
-      background: #f9fafb;
-    }
-    .note {
-      font-size: 0.78rem;
-      color: #6b7280;
-      margin-top: 4px;
-    }
-    .footer {
-      text-align: center;
-      font-size: 0.75rem;
-      color: #9ca3af;
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>花蓮縣一鍵檢舉</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+            background: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 960px; /* 加寬以容納兩欄 */
+            margin: 0 auto;
+            padding: 16px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            text-align: center;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+
+        /* 響應式佈局：電腦版分左右兩欄，手機版維持直向 */
+        .layout-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        @media (min-width: 768px) {
+            .layout-wrapper {
+                display: grid;
+                grid-template-columns: 1.2fr 1fr; /* 左邊檢舉工具較寬，右邊法條較窄 */
+                align-items: start;
+            }
+        }
+
+        .section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        /* 特別將右側法條區塊設為不同風格 */
+        .section.legal-info {
+            background: #fffbf0; /* 淡黃色背景強調 */
+            border-color: #fde68a;
+        }
+        
+        .section h2 {
+            font-size: 1.15rem;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            color: #111827;
+        }
+        .legal-info h2 {
+            color: #92400e;
+        }
+
+        .section p {
+            margin: 6px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #374151;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        .legal-tag {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fcd34d;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border: none;
+            text-decoration: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: #2563eb;
+            color: #ffffff;
+            font-weight: 600;
+            transition: background 0.2s;
+            box-sizing: border-box;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .btn.secondary { background: #059669; }
+        .btn.secondary:hover { background: #047857; }
+        .btn.outline { 
+            background: #ffffff; 
+            color: #2563eb; 
+            border: 1px solid #2563eb; 
+        }
+        .btn.outline:hover { background: #eff6ff; }
+        .btn.small { 
+            width: auto; 
+            padding: 6px 12px; 
+            font-size: 0.85rem; 
+            display: inline-block;
+        }
+
+        .template-box {
+            background: #f9fafb;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.9rem;
+            border: 1px dashed #d1d5db;
+            margin-top: 8px;
+            white-space: pre-line;
+            color: #1f2937;
+        }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            font-size: 0.9rem;
+            resize: vertical;
+            background: #f9fafb;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-top: 4px;
+        }
+        
+        .note {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+        
+        /* 法條區塊專用樣式 */
+        .law-item {
+            margin-bottom: 16px;
+            border-bottom: 1px dashed #e5e7eb;
+            padding-bottom: 12px;
+        }
+        .law-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .law-title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .white-talk {
+            background: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #4b5563;
+            margin-top: 6px;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            grid-column: 1 / -1; /* 跨欄 */
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>花蓮縣一鍵檢舉</h1>
-    <div class="subtitle">
-      手機點一下即可：撥打專線、複製範本、前往官方陳情頁<br>
-      （實際受理以花蓮縣政府各機關規定為準）
+    <div class="container">
+        <h1>花蓮縣一鍵檢舉</h1>
+        <div class="subtitle">
+            左側工具：快速複製範本與連結｜右側寶典：拒絕公務員無理要求<br>
+            <span style="font-size: 0.8rem;">（手機版請向下滑動查看法條寶典）</span>
+        </div>
+
+        <div class="layout-wrapper">
+            <!-- 左側（或上方）：檢舉工具區 -->
+            <div class="main-column">
+                <!-- 建築管理／公寓大廈管理 -->
+                <div class="section">
+                    <h2>🏢 公寓大廈管理違規 <span class="tag">建築管理 </span></h2>
+                    <p>《公寓大廈管理條例》第 16 條規定：公共區域（樓梯間、走廊、逃生出口等）必須保持暢通。堆置鞋櫃、紙箱、雜物皆屬違規。</p>
+                    
+                    <!-- 一鍵前往官方陳情頁 -->
+                    <a class="btn" href="https://serviceonline.hl.gov.tw/html/mail?Mqclass=13&Mqclass1=13.1" target="_blank" rel="noopener noreferrer" onclick="window.open(this.href, '_blank'); return false;">
+                        📝 前往 花蓮縣建管（公寓大廈）陳情頁
+                    </a>
+                    <p class="note">⚠️ 點擊後請填寫真實資料。若擔心個資外洩，請參考右側（或下方）法條。</p>
+
+                    <!-- 主題範本 -->
+                    <p style="margin-top:12px;"><strong>1. 主題建議：</strong></p>
+                    <div class="template-box" id="subject-apt">公寓大廈管理－公共通道遭占用</div>
+                    <button class="btn small outline" onclick="copyText('subject-apt')">📋 複製主題</button>
+
+                    <!-- 內容範本 -->
+                    <p style="margin-top:12px;"><strong>2. 內容範本（請自行修改）：</strong></p>
+                    <textarea id="body-apt" readonly>(地址)住戶長期在樓梯間放置鞋櫃與雜物，占用逃生通道（見附件照片），影響通行與消防安全。依《公寓大廈管理條例》第 16 條，公共通道不得堆置私人物品。請貴單位依職權查處並要求改善，以保障住戶生命安全。</textarea>
+                    <button class="btn small outline" onclick="copyText('body-apt')">📋 複製內容</button>
+                </div>
+
+                <!-- 1999 縣民專線 -->
+                <div class="section">
+                    <h2>📞 一般違規通報 <span class="tag">1999 專線</span></h2>
+                    <p>若不確定權責單位，可直接撥打 1999 請求轉接。</p>
+                    <a class="btn secondary" href="tel:1999">📞 撥打花蓮縣 1999</a>
+                    <p class="note">外縣市請改撥花蓮縣政府總機轉接。</p>
+                </div>
+            </div>
+
+            <!-- 右側（或下方）：法條補給站 -->
+            <div class="side-column">
+                <div class="section legal-info">
+                    <h2>🛡️ 檢舉人權益須知 <span class="tag legal-tag">必讀</span></h2>
+                    <p style="font-size:0.9rem; color:#78350f; margin-bottom:12px;">
+                        當承辦人員說「你要自己舉證」、「你要來現場帶路」或「不能匿名」時，請用以下法條保護自己。
+                    </p>
+
+                    <!-- 法條 1 -->
+                    <div class="law-item">
+                        <span class="law-title">1. 他們必須自己查</span>
+                        <span class="tag legal-tag">行政程序法 第 36 條</span>
+                        <div class="white-talk">
+                            <strong>法規內容：</strong>行政機關應依職權調查證據，不受當事人主張之拘束。<br>
+                            <strong>💡 白話文：</strong>
+                            你已經提供地址和照片了，剩下的查證（去現場看、量尺寸、認人）是公務員的職責。他們「必須主動」調查，不能因為懶惰就推給民眾自己蒐證。
+                        </div>
+                    </div>
+
+                    <!-- 法條 2 -->
+                    <div class="law-item">
+                        <span class="law-title">2.個資法</span>
+                        <span class="tag legal-tag">行政院處理人民陳情案件要點 第 18 點</span>
+                        <span class="tag legal-tag" style="margin-top:4px;">個資法 第 5 條</span>
+                        <div class="white-talk">
+                            <strong>法規內容：</strong>受理機關應予保密...不得逾越特定目的之必要範圍。<br>
+                            <strong>💡 白話文：</strong>
+                            叫你去現場跟鄰居對質、或讓鄰居看到是你帶官員來的，就是變相洩密！這已經違反了保密規定，且逾越了辦案的必要範圍。
+                        </div>
+                    </div>
+
+                    <!-- 法條 3 -->
+                    <div class="law-item">
+                        <span class="law-title">3. 拒絕陪同</span>
+                        <span class="tag legal-tag">行政程序法 第 7 條 (比例原則)</span>
+                        <div class="white-talk">
+                            <strong>法規內容：</strong>採取之方法應有助於目的之達成...應選擇對人民權益損害最少者。<br>
+                            <strong>💡 白話文：</strong>
+                            如果你已提供照片，他們自己去也能辦（損害最少的方法）。非要叫你去現場冒著被被騷擾的風險（損害最大的方法），就違反了比例原則，你可以嚴正拒絕。
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            本頁僅為檢舉輔助工具，實際受理情形以花蓮縣政府各機關規定為準。<br>
+            遇到公務員推託時，請溫和但堅定地引用右側（下方）法條。
+        </div>
     </div>
 
-    <!-- 緊急狀況 -->
-    
+    <script>
+        function copyText(id) {
+            const el = document.getElementById(id);
+            if (!el) { alert('找不到要複製的內容。'); return; }
+            
+            let text = '';
+            if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+                text = el.value;
+            } else {
+                text = el.innerText || el.textContent;
+            }
 
-    <!-- 建築管理／公寓大廈管理 -->
-    <div class="section">
-      <h2>🏢 公寓大廈管理違規檢舉 <span class="tag">建築管理 </span></h2>
-      <p>《公寓大廈管理條例》第 16 條規定：
-公寓大廈的共用部分（例如：樓梯間、走廊、逃生出口、樓層前室、防火門區域等），必須保持隨時可供通行與避難之暢通狀態。
-任何住戶皆不得在上述公共通道堆置私人物品，包含鞋櫃、鞋子、紙箱、傘架、垃圾、機車腳踏車、雜物等，皆屬違規。
-        例如：樓梯間堆放雜物、外推占用、消防通道被封鎖、公設被私自占用等。</p>
+            if (!text) { alert('目前沒有可複製的文字。'); return; }
 
-      <!-- 一鍵前往官方陳情頁 -->
-     <a class="btn"
-   href="https://serviceonline.hl.gov.tw/html/mail?Mqclass=13&Mqclass1=13.1"
-   target="_blank"
-   rel="noopener noreferrer"
-   onclick="window.open(this.href, '_blank'); return false;">
-  📝 一鍵前往 花蓮縣建築管理（公寓大廈管理）線上陳情頁
-</a>
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function () {
+                    alert('✅ 已複製！\n請切換至官方頁面貼上。');
+                }).catch(function () {
+                    fallbackCopy(el);
+                });
+            } else {
+                fallbackCopy(el);
+            }
+        }
 
-      <p class="note">點擊後會開啟花蓮縣政府官方「陳情信箱」頁面，請依指示填入真實姓名、聯絡方式與檢舉內容。</p>
-
-      <!-- 主題範本 -->
-      <p><strong>主題建議（可直接複製貼上）：</strong></p>
-      <div class="template-box" id="subject-apt">
-公寓大廈管理－公共通道遭占用
-      </div>
-      <button class="btn small outline" onclick="copyText('subject-apt')">📋 一鍵複製主題</button>
-
-      <!-- 內容範本 -->
-      <p style="margin-top:10px;"><strong>內容範本（請按實際狀況修改）：</strong></p>
-      <textarea id="body-apt" readonly>
-(地址)住戶長期在樓梯間放置鞋櫃、鞋子與雜物，占用逃生通道（見附件照片），影響通行與消防安全。
-
-依《公寓大廈管理條例》第 16 條，公共通道不得堆置私人物品。請貴單位協助查處並要求改善，以保障大樓住戶安全。
-      </textarea>
-      <button class="btn small outline" onclick="copyText('body-apt')">📋 一鍵複製內容範本</button>
-
-      <p class="note">
-        使用方式：先按「一鍵複製主題」與「一鍵複製內容範本」，再點上方官方連結，
-        將文字分別貼到「來信主題」與「來信內容」欄位，最後上傳照片、送出即可。
-      </p>
-    </div>
-
-    <!-- 1999 縣民專線 -->
-    <div class="section">
-      <h2>📞 一般縣政問題與違規通報 <span class="tag">1999 縣民服務專線</span></h2>
-      <p>若不確定屬哪個單位（建管、環保、交通…），可以先打 1999，請話務員協助轉接到權責機關。</p>
-      <a class="btn secondary" href="tel:1999">📞 一鍵撥打 花蓮縣 1999 縣民服務專線</a>
-      <p class="note">外縣市或手機若無法直撥 1999，可改撥花蓮縣政府總機，由總機轉接。</p>
-    </div>
-
-    <!-- 備註 -->
-    <div class="footer">
-      本頁僅為檢舉流程，實際受理、裁罰與否，以花蓮縣政府及各權責機關之規定為準。<br>
-      建議檢舉時儘量提供完整地址、時間、照片與事實說明，以提高處理效率。
-    </div>
-  </div>
-
-  <script>
-    function copyText(id) {
-      const el = document.getElementById(id);
-      if (!el) {
-        alert('找不到要複製的內容。');
-        return;
-      }
-      let text = '';
-      if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
-        text = el.value;
-      } else {
-        text = el.innerText || el.textContent;
-      }
-
-      if (!text) {
-        alert('目前沒有可複製的文字。');
-        return;
-      }
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () {
-          alert('已複製，請貼到官方表單或訊息中。');
-        }).catch(function () {
-          fallbackCopy(el);
-        });
-      } else {
-        fallbackCopy(el);
-      }
-    }
-
-    function fallbackCopy(el) {
-      let range = document.createRange();
-      range.selectNodeContents(el);
-      let sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      try {
-        document.execCommand('copy');
-        alert('已複製，請貼到官方表單或訊息中。');
-      } catch (e) {
-        alert('瀏覽器不支援自動複製，請手動長按選取複製。');
-      }
-      sel.removeAllRanges();
-    }
-  </script>
+        function fallbackCopy(el) {
+            let range = document.createRange();
+            range.selectNodeContents(el);
+            let sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            try {
+                document.execCommand('copy');
+                alert('✅ 已複製！\n請切換至官方頁面貼上。');
+            } catch (e) {
+                alert('⚠️ 瀏覽器不支援自動複製，請手動長按選取複製。');
+            }
+            sel.removeAllRanges();
+        }
+    </script>
 </body>
 </html>
